@@ -11,7 +11,8 @@ class CategoriesController extends Controller
     public function index() {
         return view('categories', [
             'title' => 'Categories All',
-            'categories' => Categories::all()
+            // 'categories' => Categories::all()
+            'categories' => Categories::with('posts')->get()
         ]);
     }
     

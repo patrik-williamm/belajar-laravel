@@ -9,22 +9,29 @@ class Post extends Model
 {
     use HasFactory;
 
-    // protected $fillable = [
-    //     'title',
-    //     'slug',
-    //     'excrept',
-    //     'body',
-    //     'categories_id',
-    // ];
-
     protected $guarded = ['id'];
+    protected $with = ['categories', 'user'];
 
     public function categories() {
         
         return $this->belongsTo(Categories::class);
     }
 
-    public function search(Request $request) {
-        
+    public function user() {
+        return $this->belongsTo(User::class);
     }
+
+   public function scopeFilter($query) {
+       return $query->where('title', 'like', '%'.request('search').'%');
+   }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(){
+        return 'slug';
+    }
+
 }
